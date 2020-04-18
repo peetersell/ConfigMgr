@@ -23,7 +23,7 @@ try {
     $latest_available
 }
 catch {
-    handle_error $error[0].InvocationInfo.line $error[0].exception.message 
+    handle_error ($error.InvocationInfo.line | select-object -first 1) ($error.exception.message | select-object -first 1)
 }
 
 # check the newest deployed version in configmr
@@ -87,7 +87,7 @@ function Copy-SCCMApplication {
 try {
     Copy-SCCMApplication("AC - Citrix Workspace App $latest_deployed") 
 } catch {
-    handle_error $error[0].InvocationInfo.line $error[0].exception.message 
+    handle_error ($error.InvocationInfo.line | select-object -first 1) ($error.exception.message | select-object -first 1) 
 }
 
 # rename the app from old to new in configmgr
@@ -117,7 +117,7 @@ try {
     # deploy it for the test collection
     New-CMApplicationDeployment -CollectionName “TESTIKAS” -Name "AC - Citrix Workspace App $latest_available" -DeployAction Install -DeployPurpose Available -UserNotification DisplayAll 
 } catch {
-    handle_error $error[0].InvocationInfo.line $error[0].exception.message 
+    handle_error ($error.InvocationInfo.line | select-object -first 1) ($error.exception.message | select-object -first 1) 
 }
 
 cd c:\
