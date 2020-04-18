@@ -32,7 +32,7 @@ try {
      $machines_primary_users = $new_virt_machines | Select-Object name, @{N='primary user';E={ForEach-Object {get-cmuserdeviceaffinity -devicename $psitem.name | Where-Object {$_.types -like "*1*"} | select -ExpandProperty uniqueusername}}}
 }
 catch {
-    handle_error $error.InvocationInfo.line[0] $error.exception.message[0]
+    handle_error ($error.InvocationInfo.line | select-object -first 1) ($error.exception.message | select-object -first 1)
 }
 
 if (!$machines_primary_users) {
@@ -47,7 +47,7 @@ if (!$machines_primary_users) {
     & "C:\Program Files\Zabbix\zabbix_sender.exe" $escapeparser -z monitooring.plcaeholder.sise -s watchdog.plcaeholder.sise -k "trapperkey[virtual_workstation]" -o 1
     }
     catch {
-        handle_error $error.InvocationInfo.line[0] $error.exception.message[0]
+        handle_error ($error.InvocationInfo.line | select-object -first 1) ($error.exception.message | select-object -first 1)
     }
 }
 }
